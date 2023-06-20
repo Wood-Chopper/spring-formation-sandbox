@@ -1,0 +1,34 @@
+@startuml
+
+participant Command as "Command\nService"
+participant Payment as "Basket\nService"
+participant Product as "Payment\nService"
+participant Repository as "Product\nRepository"
+database Database
+|||
+|||
+ -> Command
+activate Command
+Command -> Payment: getBasket()
+activate Payment
+Payment -> Repository: findById()
+activate Repository
+Repository -> Database: SELECT basket WHERE id
+Database --> Repository
+Repository --> Payment
+deactivate Repository
+Payment --> Command
+deactivate Payment
+
+Command -> Product: processPayment(basket)
+activate Product
+note right Product: basket.products.forEach()
+deactivate Repository
+Product --> Command
+deactivate Product
+deactivate Command
+
+|||
+|||
+
+@enduml

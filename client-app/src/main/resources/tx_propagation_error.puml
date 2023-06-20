@@ -1,0 +1,31 @@
+@startuml
+
+participant Command as "Command\nService"
+participant Product as "Product\nService"
+participant Payment as "Basket\nService"
+participant Repository as "Product\nRepository"
+|||
+|||
+ -> Command
+activate Command
+Command -> Product: saveProducts()
+activate Product
+Product -> Repository: saveAll()
+activate Repository
+note right Repository: Products cached in\n\n\n
+Repository --> Product
+deactivate Repository
+Product --> Command
+deactivate Product
+
+Command -> Payment: saveBasket()
+activate Payment
+Payment -[#red]> Payment: throws RuntimeException
+Payment -[#red]> Command
+deactivate Payment
+deactivate Command
+
+|||
+|||
+
+@enduml

@@ -1,0 +1,25 @@
+application:
+  users:
+    - username: admin
+      password: admin
+      authorities: READ,WRITE
+    - username: user
+      password: user
+      authorities: READ
+
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true
+
+  datasource:
+    url: jdbc:h2:file:./db
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password

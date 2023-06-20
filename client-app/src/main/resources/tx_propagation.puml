@@ -1,0 +1,38 @@
+@startuml
+
+participant Command as "Command\nService"
+participant Product as "Product\nService"
+participant Payment as "Payment\nService"
+participant Repository as "Product\nRepository"
+database Database
+|||
+|||
+ -> Command
+activate Command
+Command -> Product: getProducts()
+activate Product
+Product -> Repository: findById()
+activate Repository
+Repository -> Database: SELECT product WHERE id
+Database --> Repository
+note right Repository: Product cached in\n\n\n
+Repository --> Product
+deactivate Repository
+Product --> Command
+deactivate Product
+
+Command -> Payment: processPayment()
+activate Payment
+Payment -> Repository: findById()
+activate Repository
+note right Repository: Product from         \n\n\n
+Repository --> Payment
+deactivate Repository
+Payment --> Command
+deactivate Payment
+deactivate Command
+
+|||
+|||
+
+@enduml

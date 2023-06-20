@@ -1,0 +1,30 @@
+@startuml
+
+participant Command as "Command\nService"
+participant Payment as "Payment\nService"
+participant Error as "Error\nService"
+participant Repository as "Error\nRepository"
+|||
+|||
+ -> Command
+activate Command
+note right Command: try {
+Command -> Payment: saveBasket()
+activate Payment
+Payment -[#red]> Payment: throws RuntimeException
+Payment -[#red]> Command
+deactivate Payment
+note right Command: } catch (e) {
+Command -> Error: saveError()
+activate Error
+Error -> Repository: save()
+Repository --> Error
+Error --> Command
+deactivate Error
+note right Command: }
+deactivate Command
+
+|||
+|||
+
+@enduml
